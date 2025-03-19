@@ -38,4 +38,30 @@ public class BookService {
       bookRepository.save(book);
       return true;
   }
+
+  public BookModel findById(Long id) {
+    return bookRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Book not found."));
+  }
+
+  public BookModel update(BookModel dto) {
+    BookModel bookRepo = bookRepository.findById(dto.getId())
+        .orElseThrow(() -> new RuntimeException("Book not found."));
+    dto.setCreatedAt(bookRepo.getCreatedAt());
+    return bookRepository.save(dto);
+  }
+
+  public void delete(Long id) {
+    bookRepository.deleteById(id);
+  }
+
+  public List<BookModel> findAllByCategory(Long idCategory) {
+    return bookRepository.findAllByCategoryId(idCategory)
+        .orElseThrow(() -> new RuntimeException("None book with the category id."));
+  }
+
+  public List<BookModel> findAllByAuthor(Long authorId) {
+    return bookRepository.findAllByAuthorId(authorId)
+        .orElseThrow(() -> new RuntimeException("None book with the category id."));
+  }
 }
