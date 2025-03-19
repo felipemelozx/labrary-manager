@@ -3,6 +3,7 @@ package com.library.Manager.controller;
 import com.library.Manager.model.CategoryModel;
 import com.library.Manager.model.DTO.CategoryDTO;
 import com.library.Manager.service.CategoryService;
+import jdk.javadoc.doclet.Reporter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,4 +38,19 @@ public class CategoryController {
     return ResponseEntity.ok().body(categoryService.findAll());
   }
 
+  @GetMapping("/{id}")
+  public ResponseEntity<CategoryModel> findCategoryById(@PathVariable Long id){
+    return ResponseEntity.ok().body(categoryService.findById(id));
+  }
+
+  @PutMapping("/update")
+  public ResponseEntity<CategoryModel> updateCategory(@RequestBody CategoryModel categoryModel){
+    return ResponseEntity.ok().body(categoryService.update(categoryModel));
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity deleteCategory(@PathVariable Long id){
+    categoryService.delete(id);
+    return ResponseEntity.ok().build();
+  }
 }
