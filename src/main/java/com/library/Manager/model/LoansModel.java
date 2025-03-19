@@ -6,8 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "tb_loans")
@@ -22,13 +23,13 @@ public class LoansModel {
   private Long id;
 
   @Column(name = "user_id", nullable = false)
-  private Long userId;
+  private UUID userId;
 
   @Column(name = "book_id", nullable = false)
   private Long bookId;
 
-  @Column(name = "loan_date", nullable = false, columnDefinition = "DATE DEFAULT CURRENT_DATE")
-  private LocalDateTime loanDate = LocalDateTime.now();
+  @Column(name = "loan_date", nullable = false)
+  private LocalDateTime loanDate;
 
   @Column(name = "due_date", nullable = false)
   private LocalDateTime dueDate;
@@ -36,7 +37,7 @@ public class LoansModel {
   @Column(name = "return_date")
   private LocalDateTime returnDate;
 
+  @Column(length = 20, name = "status")
   @Enumerated(EnumType.STRING)
-  @Column(name = "status", length = 20, nullable = false)
-  private LoanStatus status = LoanStatus.BORROWED;
+  private LoanStatus status;
 }
