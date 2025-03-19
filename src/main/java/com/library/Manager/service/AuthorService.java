@@ -32,4 +32,12 @@ public class AuthorService {
     return authorRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("Author not found."));
   }
+
+
+  public AuthorModel update(AuthorModel authorModel){
+    authorRepository.findById(authorModel.getId())
+        .orElseThrow(() -> new RuntimeException("Author not found."));
+
+    return authorRepository.save(authorModel);
+  }
 }
