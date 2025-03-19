@@ -62,6 +62,6 @@ public class BookService {
 
   public List<BookModel> findAllByAuthor(Long authorId) {
     return bookRepository.findAllByAuthorId(authorId)
-        .orElseThrow(() -> new RuntimeException("None book with the category id."));
+        .orElseThrow(() -> new RuntimeException("None book with the Author id."));
   }
 }
