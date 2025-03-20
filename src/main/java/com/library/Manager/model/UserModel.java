@@ -50,4 +50,9 @@ public class UserModel {
     this.password = encoder.encode(password);
   }
 
+  public boolean checkPassword(String password){
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    return encoder.matches(password, this.password);
+  }
+
 }

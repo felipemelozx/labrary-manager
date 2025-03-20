@@ -1,8 +1,12 @@
 package com.library.Manager.service;
 
-import com.library.Manager.model.DTO.UserDTO;
+import com.library.Manager.infra.security.TokenService;
+import com.library.Manager.model.DTO.CreateUserDto;
+import com.library.Manager.model.DTO.LoginDTO;
 import com.library.Manager.model.UserModel;
 import com.library.Manager.repository.UserRepository;
+import com.library.Manager.utils.Check;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,17 +16,22 @@ import java.util.UUID;
 public class UserService {
 
   private final UserRepository userRepository;
+  private final TokenService tokenService;
 
-  public UserService(UserRepository userRepository) {
+  public UserService(UserRepository userRepository, TokenService tokenService) {
     this.userRepository = userRepository;
+    this.tokenService = tokenService;
   }
 
-  public boolean createUser(UserDTO userDto) {
-    var user = userDto.fromUserModel();
-     if(userRepository.save(user) != null){
-       return true;
-     }
-    return false;
+  @Transactional
+  public List<String> register(CreateUserDto userDto) {
+    var errors = Check.validatePasswordAndEmail(userDto.password(), userDto.email());
+
+    if (errors.isEmpty()) {
+      var user = userDto.fromUserModel();
+      userRepository.save(user);
+    }
+    return errors;
   }
 
   public List<UserModel> findAllUsers() {
@@ -49,5 +58,15 @@ public class UserService {
 
   public void deleteUser(UUID id) {
     userRepository.deleteById(id);
+  }
+
+  public String login(LoginDTO userLogin) {
+    UserModel user = userRepository.findByEmail(userLogin.email())
+        .orElseThrow(() -> new RuntimeException("User not found."));
+
+    if(user.checkPassword(userLogin.password())){
+      return this.tokenService.generateToken(user);
+    };
+    return null;
   }
 }

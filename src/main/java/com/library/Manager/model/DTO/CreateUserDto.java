@@ -6,7 +6,7 @@ import com.library.Manager.model.UserModel;
 
 import java.time.LocalDateTime;
 
-public record UserDTO(String name,
+public record CreateUserDto(String name,
                       String email,
                       String phone,
                       String password,
