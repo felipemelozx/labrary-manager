@@ -23,7 +23,7 @@ public class LoansModel {
   private Long id;
 
   @Column(name = "user_id", nullable = false)
-  private UUID userId;
+  private String userEmail;
 
   @Column(name = "book_id", nullable = false)
   private Long bookId;

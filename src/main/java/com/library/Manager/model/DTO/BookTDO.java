@@ -10,10 +10,11 @@ public record BookTDO(String title,
                       String publisherYear,
                       Long category,
                       short availableCopies,
-                      short totalCopies) {
+                      short totalCopies,
+                      String coverImage) {
 
 public BookModel fromToBookModel(){
   return new BookModel(null, title, null, publisher,
-      publisherYear, null, availableCopies, totalCopies, null);
+      publisherYear, null, availableCopies, totalCopies, null, coverImage);
 }
 }
