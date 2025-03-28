@@ -1,5 +1,6 @@
 package com.library.Manager.controller.Auth;
 
+import com.library.Manager.infra.security.TokenService;
 import com.library.Manager.model.DTO.CreateUserDto;
 import com.library.Manager.model.DTO.LoginDTO;
 import com.library.Manager.model.DTO.ResponseLoginDTO;
@@ -7,10 +8,7 @@ import com.library.Manager.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -21,9 +19,11 @@ import java.util.List;
 public class AuthController {
 
   private final UserService userService;
+  private final TokenService tokenService;
 
-  public AuthController(UserService repository, PasswordEncoder passwordEncoder) {
+  public AuthController(UserService repository, PasswordEncoder passwordEncoder, TokenService tokenService) {
     this.userService = repository;
+    this.tokenService = tokenService;
   }
 
   @PostMapping("/register")
@@ -44,5 +44,12 @@ public class AuthController {
       return ResponseEntity.ok().body(new ResponseLoginDTO(body.email(),token));
     }
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+  }
+
+  @PostMapping("/validate-token")
+  public ResponseEntity<ResponseTokenValidDTO> isTokenValid(@RequestBody TokenValidDTO body){
+    String isValid = tokenService.validateToken(body.token());
+    boolean valid = isValid != null;
+    return ResponseEntity.ok(new ResponseTokenValidDTO(valid));
   }
 }

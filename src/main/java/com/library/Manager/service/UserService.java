@@ -69,4 +69,9 @@ public class UserService {
     };
     return null;
   }
+
+  public UserModel findUserByEmail(String userEmail) {
+    return userRepository.findByEmail(userEmail)
+        .orElseThrow(() -> new RuntimeException("User not found."));
+  }
 }

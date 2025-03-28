@@ -28,7 +28,7 @@ public class LoansService {
     }
     var book = bookService.findById(loansModel.getBookId());
     // throw erro if user not exist.
-    userService.findUserById(loansModel.getUserId());
+    userService.findUserByEmail(loansModel.getUserEmail());
     if (book.getAvailableCopies() != 0){
       short newValue = (short) (book.getAvailableCopies() - 1);
       book.setAvailableCopies(newValue);

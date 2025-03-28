@@ -7,12 +7,12 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record LoansDTO(Long bookId,
-                       UUID userId,
+                       String userEmail,
                        LocalDateTime borrowDate,
                        LocalDateTime dueDate) {
 
   public LoansModel fromToLoansModel(){
-    return new LoansModel(null, this.userId(), this.bookId(), this.borrowDate(), this.dueDate(),
+    return new LoansModel(null, this.userEmail(), this.bookId(), this.borrowDate(), this.dueDate(),
         null, LoanStatus.fromValue(0));
   }
 }
